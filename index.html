@@ -256,9 +256,10 @@ let answers = {};
 let totalScore = 0;
 
 // ==================== INIT ====================
+function getCookie(n){const m=document.cookie.match("(^|;)\\s*"+n+"\\s*=\\s*([^;]+)");return m?m.pop():null;}
 function init(){
-  // Anti-repeat: check if already submitted
-  if(localStorage.getItem("jessie_gzf_done")){
+  // Dual anti-repeat: Cookie (WeChat persistent) + localStorage
+  if(localStorage.getItem("jessie_gzf_done") || getCookie("jessie_gzf_done")){
     showPage("done");
     return;
   }
@@ -462,8 +463,9 @@ function getType(score){
 
 // ==================== RESULT ====================
 function showResult(){
-  // Mark as submitted (anti-repeat)
+  // Dual anti-repeat: localStorage + Cookie (WeChat compatible)
   localStorage.setItem("jessie_gzf_done","1");
+  document.cookie = "jessie_gzf_done=1;max-age=31536000;path=/";
   
   const type = getType(totalScore);
   const sub = { answers:{...answers}, score:totalScore, type:type.name, time:new Date().toISOString() };
