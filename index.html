@@ -55,6 +55,10 @@ body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;backgr
 .opt-item .radio{width:18px;height:18px;border:2px solid #d1d5db;border-radius:50%;margin-right:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 .opt-item.selected .radio{border-color:#2563eb;background:#2563eb}
 .opt-item.selected .radio::after{content:"";width:7px;height:7px;background:#fff;border-radius:50%}
+/* Checkbox style (multi-select) */
+.opt-item .checkbox-sq{width:18px;height:18px;border:2px solid #d1d5db;border-radius:4px;margin-right:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:transparent}
+.opt-item.multi-selected{border-color:#2563eb;background:#eff6ff}
+.opt-item.multi-selected .checkbox-sq{border-color:#2563eb;background:#2563eb;color:#fff}
 .opt-text{flex:1}
 .input-text{width:100%;padding:10px 12px;border:1.5px solid #e8ecf0;border-radius:8px;font-size:14px;outline:none;font-family:inherit}
 .input-text:focus{border-color:#2563eb}
@@ -104,7 +108,7 @@ body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;backgr
     </ul>
   </div>
   <button class="btn btn-primary" onclick="startQuiz()">开始测评 →</button>
-  <p style="font-size:12px;color:#9ca3af;margin-top:12px;">免费测评 · 信息安全保密</p>
+  <p style="font-size:12px;color:#9ca3af;margin-top:12px;">专业测评 · 信息安全保密</p>
 </div>
 
 <!-- QUIZ -->
@@ -172,7 +176,7 @@ const questions = [
   { id:"q10",type:"radio",label:"家庭是否有以下特殊情形？",hint:"特殊家庭可享受政策优待",required:false,score:5,options:[{text:"无任何特殊情形",score:0},{text:"持有残疾人证",score:5},{text:"低保/特困/低保边缘家庭",score:5},{text:"失独家庭",score:5},{text:"现役军人",score:5}]},
   // 收入
   { id:"q11",type:"radio",label:"个税APP上年度年收入大概多少？",hint:"深圳人均限额约5.4万/年",required:true,score:10,options:[{text:"3万元以下",score:10},{text:"3-5万元",score:8},{text:"5-8万元",score:5},{text:"没有个税申报记录",score:3},{text:"不清楚/没查过",score:3},{text:"8-12万元",score:2},{text:"12万元以上",score:0}]},
-  { id:"q12",type:"radio",label:"以下哪项最符合您的收入结构？",hint:"单选最匹配的一项，收入越复杂审核风险越高",required:true,score:10,options:[{text:"只有工资薪金",score:10},{text:"有公积金提取",score:6},{text:"有抚养费收入",score:7},{text:"有投资理财收益",score:5},{text:"有劳务报酬/稿费/版权费",score:5},{text:"有个体户/网店经营收入",score:3},{text:"有公司分红/经营所得",score:2},{text:"有房租收入",score:2},{text:"有其他未申报收入",score:1}]},
+  { id:"q12",type:"checkbox",label:"您的收入来源包括以下哪些？（可多选）",hint:"可多选，收入来源越多越复杂，审核风险越高",required:true,score:10,options:[{text:"工资薪金",score:10},{text:"公积金提取",score:6},{text:"抚养费收入",score:6},{text:"投资理财收益",score:5},{text:"劳务报酬/稿费/版权费",score:5},{text:"个体户/网店经营收入",score:3},{text:"公司分红/经营所得",score:2},{text:"房租收入",score:2},{text:"灵活就业人员",score:4},{text:"公私户混用（公司经营走个人账户）",score:1},{text:"有其他未申报收入",score:1}]},
   // 资金往来
   { id:"q13",type:"radio",label:"是否有大额资金往来？",hint:"大额不明资金是审核重点",required:true,score:5,options:[{text:"没有",score:5},{text:"有借款/还款往来",score:3},{text:"有亲戚朋友转账",score:3},{text:"公司经营资金走个人账户",score:1},{text:"有不明来源大额转入",score:0}]},
   // 财产
@@ -187,40 +191,40 @@ const types = [
     badge:"#16a34a",bg:"#f0fdf4",border:"#bbf7d0",color:"#166534",
     desc: `根据您的填写，初步判断属于<strong>【稳妥型】</strong>——基本条件看起来不错。<br><br>
     但请注意：系统自动测评无法替代专业人工核查。实际情况中，<strong>收入口径认定、财产范围界定、大额流水解释</strong>这三项，每项都有被住建部门退回的案例。<br><br>
-    杰西老师已收到您的数据，将在<strong>24小时内</strong>联系您，免费帮您确认是否有隐藏风险。`,
-    cta: "基本条件不错，但3项关键细节需要人工核查。杰西将为您免费确认。"
+    杰西老师已收到您的数据，将在<strong>24小时内</strong>联系您，帮您核查是否有隐藏风险——很多表面稳妥的申请在审核时也会出问题。`,
+    cta: "基本条件不错，但3项关键细节仍需人工核查。杰西将为您详细分析。"
   },
   {
     id:"shouru",name:"收入关注型",range:[55,77],
     badge:"#f59e0b",bg:"#fff7ed",border:"#fed7aa",color:"#92400e",
     desc: `根据您的填写，属于<strong>【收入关注型】</strong>——您的收入结构有一定复杂性。<br><br>
     收入核算是公租房审核中<strong>被退回最多的环节</strong>。哪些收入算、哪些不算、怎么计算年度额度，不同审核人员口径可能完全不同。这些问题无法通过表格自测判断，必须结合银行流水和个税数据逐项核对。<br><br>
-    杰西老师已收到您的数据，将在<strong>24小时内</strong>联系您，免费帮您梳理收入核算口径。`,
-    cta: "收入核算是被退回最多的环节。杰西将免费帮您梳理口径。"
+    杰西老师已收到您的数据，将在<strong>24小时内</strong>联系您，为您梳理收入核算口径。`,
+    cta: "收入核算是被退回最多的环节。杰西将为您专业梳理。"
   },
   {
     id:"caichan",name:"财产关注型",range:[35,54],
     badge:"#f97316",bg:"#fff7ed",border:"#fed7aa",color:"#9a3412",
     desc: `根据您的填写，属于<strong>【财产关注型】</strong>——财产方面需要仔细梳理。<br><br>
     不是所有财产都计入审核，也不是所有财产都不计入。<strong>车辆估值、理财持仓、公积金余额</strong>的审核口径各有不同。即使总额不超过限额，单项财产也可能触发重点关注。<br><br>
-    杰西老师已收到您的数据，将在<strong>24小时内</strong>联系您，免费帮您梳理财产审核口径。`,
-    cta: "财产审核口径复杂，不是有财产就不能过。杰西免费帮您梳理。"
+    杰西老师已收到您的数据，将在<strong>24小时内</strong>联系您，为您梳理财产审核口径。`,
+    cta: "财产审核口径复杂，不是有财产就不能过。杰西为您梳理。"
   },
   {
     id:"shiji",name:"时机抉择型",range:[15,34],
     badge:"#3b82f6",bg:"#eff6ff",border:"#bfdbfe",color:"#1e40af",
     desc: `根据您的填写，属于<strong>【时机抉择型】</strong>——关键不是能不能申，而是什么时候申。<br><br>
     申请时机的选择直接影响审核所用的数据年度，<strong>早一年或晚一年</strong>，结果可能完全不同。收入刚好在限额边缘时，时机策略尤为重要。<br><br>
-    杰西老师已收到您的数据，将在<strong>24小时内</strong>联系您，免费帮您分析最佳申请时机。`,
-    cta: "申请时机决定审核结果。杰西将免费帮您分析最优路径。"
+    杰西老师已收到您的数据，将在<strong>24小时内</strong>联系您，帮您分析最佳申请时机。`,
+    cta: "申请时机决定审核结果。杰西为您分析最优路径。"
   },
   {
     id:"teshu",name:"特殊情形型",range:[0,14],
     badge:"#dc2626",bg:"#fef2f2",border:"#fecaca",color:"#991b1b",
     desc: `根据您的填写，属于<strong>【特殊情形型】</strong>——标准申请路径可能不太适合您。<br><br>
     但深圳住房保障体系不只是公租房：<strong>保租房、人才房、退库补贴</strong>等都可能是更适合您的方案。具体哪种路径最优，需要结合您的具体情况一对一分析。<br><br>
-    杰西老师已收到您的数据，将在<strong>24小时内</strong>联系您，免费帮您分析住房保障最优方案。`,
-    cta: "标准路径不适合您，但还有更好的方案。杰西免费帮您分析。"
+    杰西老师已收到您的数据，将在<strong>24小时内</strong>联系您，帮您分析住房保障最优方案。`,
+    cta: "标准路径不适合您，但还有更好的方案。杰西为您分析。"
   },
 ];
 
@@ -242,7 +246,7 @@ function startQuiz(){
   totalScore = 0;
   showPage("quiz");
   // Reset all selections
-  document.querySelectorAll(".opt-item").forEach(e=>e.classList.remove("selected"));
+  document.querySelectorAll(".opt-item").forEach(e=>{e.classList.remove("selected");e.classList.remove("multi-selected");});
   document.querySelectorAll(".input-text").forEach(e=>e.value="");
   document.querySelectorAll(".q-block").forEach(e=>e.classList.remove("has-error"));
   document.querySelectorAll(".error-text").forEach(e=>{e.textContent="";e.style.display="none"});
@@ -270,6 +274,14 @@ function buildQuiz(){
 
     if(q.type==="text"){
       h += `<input type="text" class="input-text" id="input-${i}" placeholder="请输入${q.label}">`;
+    } else if(q.type==="checkbox"){
+      h += `<div class="opt-list" id="opts-${i}">`;
+      q.options.forEach((opt,j)=>{
+        const txt = typeof opt==="string"?opt:opt.text;
+        h += `<div class="opt-item" data-q="${i}" data-opt="${j}" onclick="toggleCheck(${i},${j},this)">
+          <div class="checkbox-sq">✓</div><span class="opt-text">${txt}</span></div>`;
+      });
+      h += `</div>`;
     } else {
       h += `<div class="opt-list" id="opts-${i}">`;
       q.options.forEach((opt,j)=>{
@@ -290,6 +302,21 @@ function selectOpt(qIdx,optIdx,el){
   document.querySelectorAll(`[data-q="${qIdx}"]`).forEach(item=>item.classList.remove("selected"));
   el.classList.add("selected");
   answers[questions[qIdx].id] = optIdx;
+  // Clear error
+  document.getElementById("error-"+qIdx).style.display="none";
+  document.getElementById("q-block-"+qIdx).classList.remove("has-error");
+}
+
+function toggleCheck(qIdx,optIdx,el){
+  el.classList.toggle("multi-selected");
+  // Track as array of selected indices
+  const qid = questions[qIdx].id;
+  if(!Array.isArray(answers[qid])) answers[qid] = [];
+  if(el.classList.contains("multi-selected")){
+    if(!answers[qid].includes(optIdx)) answers[qid].push(optIdx);
+  } else {
+    answers[qid] = answers[qid].filter(v=>v!==optIdx);
+  }
   // Clear error
   document.getElementById("error-"+qIdx).style.display="none";
   document.getElementById("q-block-"+qIdx).classList.remove("has-error");
@@ -316,6 +343,8 @@ function submitQuiz(){
     let hasErr = false;
     if(q.type==="text"){
       if(!val || val.trim()==="") hasErr = true;
+    } else if(q.type==="checkbox"){
+      if(!Array.isArray(val) || val.length===0) hasErr = true;
     } else {
       if(val===undefined||val===null) hasErr = true;
     }
@@ -354,13 +383,43 @@ function submitQuiz(){
 }
 
 // ==================== SCORING ====================
+let isIncomeComplex = false;
+
 function calculateScore(){
   totalScore = 0;
+  isIncomeComplex = false;
   questions.forEach(q=>{
     if(q.score===0) return;
     const val = answers[q.id];
     if(val===undefined||val===null) return;
-    if(q.type==="radio"||q.type==="checkbox"){
+    if(q.id==="q12"){
+      // Multi-select income: complex logic
+      const selected = Array.isArray(val) ? val : [];
+      if(selected.length===0){ return; }
+      // Sort selected indices for analysis
+      const selOpts = selected.map(i=>q.options[i]);
+      const selIdx = new Set(selected);
+      // Flag: 灵活就业(index 8), 公私户混用(index 9), 其他未申报(index 10)
+      if(selIdx.has(8)||selIdx.has(9)||selIdx.has(10)) isIncomeComplex = true;
+      if(selected.length >= 3) isIncomeComplex = true;
+
+      if(selected.length===1 && selected[0]===0){
+        totalScore += 10; // Only salary
+      } else if(selected.length===1){
+        totalScore += 6; // Single non-salary source
+      } else if(selIdx.has(9)||selIdx.has(10)){
+        totalScore += 1; // Critical risk: mixed accounts or undeclared
+      } else {
+        totalScore += 3; // Multiple sources = complex
+      }
+    } else if(q.type==="checkbox"){
+      // Generic checkbox: use highest score of selected
+      const selected = Array.isArray(val) ? val : [];
+      if(selected.length===0) return;
+      let best = 0;
+      selected.forEach(i=>{ const s = typeof q.options[i]==="string"?q.score:q.options[i].score; if(s>best) best=s; });
+      totalScore += best;
+    } else if(q.type==="radio"){
       const opt = q.options[val];
       totalScore += typeof opt==="string"?q.score:opt.score;
     }
@@ -379,16 +438,26 @@ function showResult(){
   sendToFormSubmit(sub);
 
   showPage("result");
+  let extraNote = "";
+  if(isIncomeComplex){
+    extraNote = `
+    <div class="result-desc" style="border-color:#f59e0b;background:#fffbf0">
+      <strong style="color:#f59e0b">⚠ 您的收入结构较复杂</strong><br><br>
+      您选择了多项收入来源或特殊收入类型（如灵活就业、公私户混用等）。这类情况无法通过自动化测评判断，<strong>必须结合银行流水和个税数据逐项核对</strong>。<br><br>
+      杰西将在<strong>24小时内</strong>联系您，为您进行专业梳理。
+    </div>`;
+  }
   document.getElementById("result-content").innerHTML = `
     <div style="text-align:center">
       <div class="result-type-badge" style="background:${type.bg};color:${type.color};border:1px solid ${type.border}">${type.name} · 申请人</div>
       <div class="result-type-name" style="color:${type.color}">${type.name}</div>
     </div>
     <div class="result-desc">${type.desc}</div>
+    ${extraNote}
     <div class="result-cta">
-      <h4>📱 下一步</h4>
+      <h4>📱 关于我们的服务</h4>
       <p>${type.cta}</p>
-      <p style="margin-top:8px">如需深度策略服务：<strong>收入财产梳理 + 审核风险诊断 + 最优路径规划</strong></p>
+      <p style="margin-top:8px">杰西提供<strong>收入财产梳理 + 审核风险诊断 + 最优路径规划</strong>等专业策略服务，欢迎联系了解。</p>
     </div>
   `;
   window.scrollTo(0,0);
@@ -408,6 +477,11 @@ async function sendToFormSubmit(sub){
     if(v===undefined||v===null||v==="") return;
     let dv = "";
     if(q.type==="text"){ dv = v; }
+    else if(q.type==="checkbox"){
+      const sel = Array.isArray(v) ? v : [];
+      dv = sel.map(i=>typeof q.options[i]==="string"?q.options[i]:q.options[i].text).join("、");
+      if(!dv) return;
+    }
     else { const opt = q.options[v]; dv = typeof opt==="string"?opt:opt.text; }
     answerText += q.label+"："+dv+"\n";
   });
@@ -451,6 +525,11 @@ function viewAdmin(){
       if(v===undefined||v===null||v==="") return;
       let dv = "";
       if(q.type==="text"){ dv = v; }
+      else if(q.type==="checkbox"){
+        const sel = Array.isArray(v) ? v : [];
+        dv = sel.map(i=>typeof q.options[i]==="string"?q.options[i]:q.options[i].text).join("、");
+        if(!dv) return;
+      }
       else { const opt = q.options[v]; dv = typeof opt==="string"?opt:opt.text; }
       h += `<div style="margin-bottom:1px"><strong>${q.label}：</strong>${dv}</div>`;
     });
@@ -469,6 +548,7 @@ function exportCSV(){
       const v = sub.answers[q.id];
       if(v===undefined||v===null||v==="") return '""';
       if(q.type==="text") return `"${v.replace(/"/g,'""')}"`;
+      if(q.type==="checkbox"){ const sel = Array.isArray(v)?v:[]; return `"${sel.map(i=>typeof q.options[i]==='string'?q.options[i]:q.options[i].text).join('、')}"`; }
       const opt = q.options[v];
       return `"${typeof opt==="string"?opt:opt.text}"`;
     });
