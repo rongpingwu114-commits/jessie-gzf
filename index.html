@@ -92,6 +92,27 @@ body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;backgr
 <body>
 <div class="container" id="app">
 
+<!-- ALREADY DONE -->
+<div id="page-done" class="welcome hidden">
+  <div class="logo">✅</div>
+  <h1>您已完成测评</h1>
+  <p class="subtitle">同一微信号仅限提交一次</p>
+  <div class="features">
+    <div class="feature"><div class="icon">📋</div><div class="label">测评数据已保存</div></div>
+    <div class="feature"><div class="icon">🔍</div><div class="label">等待专业解读</div></div>
+    <div class="feature"><div class="icon">💬</div><div class="label">联系杰西获取报告</div></div>
+  </div>
+  <div class="facts">
+    <h3>下一步</h3>
+    <ul>
+      <li>返回微信，联系杰西获取详细解读报告</li>
+      <li>杰西将根据您的数据做一对一分析</li>
+      <li>您的测评结果仅您和杰西可见</li>
+    </ul>
+  </div>
+  <p style="font-size:12px;color:#9ca3af;margin-top:12px;text-align:center">如需重新测评，请联系杰西处理</p>
+</div>
+
 <!-- WELCOME -->
 <div id="page-welcome" class="welcome">
   <div class="logo">🏠</div>
@@ -133,9 +154,8 @@ body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;backgr
 <!-- RESULT -->
 <div id="page-result" class="hidden">
   <div class="result-wrap" id="result-content"></div>
-  <div style="padding:0 24px 32px">
-    <button class="btn btn-outline" onclick="restartQuiz()" style="margin-bottom:12px">重新测评</button>
-    <button class="btn btn-primary" onclick="viewAdmin()">查看提交记录</button>
+  <div style="padding:0 24px 32px;text-align:center">
+    <p style="font-size:13px;color:#6b7280;margin-bottom:0">测评结果已保存。<br>返回微信联系杰西，获取详细解读。</p>
   </div>
   <div class="footer">
     杰西咨询 · 公租房上岸陪跑<br>
@@ -193,41 +213,41 @@ const types = [
     id:"wentu",name:"稳妥型",range:[78,90],
     badge:"#16a34a",bg:"#f0fdf4",border:"#bbf7d0",color:"#166534",
     desc: `根据您的填写，初步判断属于<strong>【稳妥型】</strong>——基本条件看起来不错。<br><br>
-    但请注意：系统自动测评无法替代专业人工核查。实际情况中，<strong>收入口径认定、财产范围界定、大额流水解释</strong>这三项，每项都有被住建部门退回的案例。<br><br>
-    杰西老师已收到您的数据，将在<strong>24小时内</strong>联系您，帮您核查是否有隐藏风险——很多表面稳妥的申请在审核时也会出问题。`,
-    cta: "基本条件不错，但3项关键细节仍需人工核查。杰西将为您详细分析。"
+    但请注意：系统自动测评无法替代专业人工核查。实际情况中，<strong>收入口径认定、财产范围界定、大额流水解释</strong>这三项，每项都有被住建部门退回的案例——很多表面稳妥的申请在审核时也会出问题。<br><br>
+    <strong style="color:#1a3a6b">👉 返回微信联系杰西，获取详细解读。</strong>`,
+    cta: "返回微信联系杰西，获取详细解读报告。"
   },
   {
     id:"shouru",name:"收入关注型",range:[55,77],
     badge:"#f59e0b",bg:"#fff7ed",border:"#fed7aa",color:"#92400e",
     desc: `根据您的填写，属于<strong>【收入关注型】</strong>——您的收入结构有一定复杂性。<br><br>
     收入核算是公租房审核中<strong>被退回最多的环节</strong>。哪些收入算、哪些不算、怎么计算年度额度，不同审核人员口径可能完全不同。这些问题无法通过表格自测判断，必须结合银行流水和个税数据逐项核对。<br><br>
-    杰西老师已收到您的数据，将在<strong>24小时内</strong>联系您，为您梳理收入核算口径。`,
-    cta: "收入核算是被退回最多的环节。杰西将为您专业梳理。"
+    <strong style="color:#1a3a6b">👉 返回微信联系杰西，获取收入核算专业梳理。</strong>`,
+    cta: "收入核算是退回最多的环节。联系杰西获取专业梳理。"
   },
   {
     id:"caichan",name:"财产关注型",range:[35,54],
     badge:"#f97316",bg:"#fff7ed",border:"#fed7aa",color:"#9a3412",
     desc: `根据您的填写，属于<strong>【财产关注型】</strong>——财产方面需要仔细梳理。<br><br>
     不是所有财产都计入审核，也不是所有财产都不计入。<strong>车辆估值、理财持仓、公积金余额</strong>的审核口径各有不同。即使总额不超过限额，单项财产也可能触发重点关注。<br><br>
-    杰西老师已收到您的数据，将在<strong>24小时内</strong>联系您，为您梳理财产审核口径。`,
-    cta: "财产审核口径复杂，不是有财产就不能过。杰西为您梳理。"
+    <strong style="color:#1a3a6b">👉 返回微信联系杰西，获取财产审核口径梳理。</strong>`,
+    cta: "财产审核口径复杂。联系杰西获取专业梳理。"
   },
   {
     id:"shiji",name:"时机抉择型",range:[15,34],
     badge:"#3b82f6",bg:"#eff6ff",border:"#bfdbfe",color:"#1e40af",
     desc: `根据您的填写，属于<strong>【时机抉择型】</strong>——关键不是能不能申，而是什么时候申。<br><br>
     申请时机的选择直接影响审核所用的数据年度，<strong>早一年或晚一年</strong>，结果可能完全不同。收入刚好在限额边缘时，时机策略尤为重要。<br><br>
-    杰西老师已收到您的数据，将在<strong>24小时内</strong>联系您，帮您分析最佳申请时机。`,
-    cta: "申请时机决定审核结果。杰西为您分析最优路径。"
+    <strong style="color:#1a3a6b">👉 返回微信联系杰西，分析最优申请时机。</strong>`,
+    cta: "申请时机决定审核结果。联系杰西分析最优路径。"
   },
   {
     id:"teshu",name:"特殊情形型",range:[0,14],
     badge:"#dc2626",bg:"#fef2f2",border:"#fecaca",color:"#991b1b",
     desc: `根据您的填写，属于<strong>【特殊情形型】</strong>——标准申请路径可能不太适合您。<br><br>
     但深圳住房保障体系不只是公租房：<strong>保租房、人才房、退库补贴</strong>等都可能是更适合您的方案。具体哪种路径最优，需要结合您的具体情况一对一分析。<br><br>
-    杰西老师已收到您的数据，将在<strong>24小时内</strong>联系您，帮您分析住房保障最优方案。`,
-    cta: "标准路径不适合您，但还有更好的方案。杰西为您分析。"
+    <strong style="color:#1a3a6b">👉 返回微信联系杰西，分析住房保障最优方案。</strong>`,
+    cta: "标准路径不适合您。联系杰西分析更优方案。"
   },
 ];
 
@@ -236,10 +256,17 @@ let answers = {};
 let totalScore = 0;
 
 // ==================== INIT ====================
-function init(){ buildQuiz(); }
+function init(){
+  // Anti-repeat: check if already submitted
+  if(localStorage.getItem("jessie_gzf_done")){
+    showPage("done");
+    return;
+  }
+  buildQuiz();
+}
 
 function showPage(id){
-  document.querySelectorAll("#page-welcome,#page-quiz,#page-result,#page-admin").forEach(e=>e.classList.add("hidden"));
+  document.querySelectorAll("#page-done,#page-welcome,#page-quiz,#page-result,#page-admin").forEach(e=>e.classList.add("hidden"));
   document.getElementById("page-"+id).classList.remove("hidden");
   window.scrollTo(0,0);
 }
@@ -435,6 +462,9 @@ function getType(score){
 
 // ==================== RESULT ====================
 function showResult(){
+  // Mark as submitted (anti-repeat)
+  localStorage.setItem("jessie_gzf_done","1");
+  
   const type = getType(totalScore);
   const sub = { answers:{...answers}, score:totalScore, type:type.name, time:new Date().toISOString() };
   saveSubmission(sub);
@@ -447,7 +477,7 @@ function showResult(){
     <div class="result-desc" style="border-color:#f59e0b;background:#fffbf0">
       <strong style="color:#f59e0b">⚠ 您的收入结构较复杂</strong><br><br>
       您选择了多项收入来源或特殊收入类型（如灵活就业、公私户混用等）。这类情况无法通过自动化测评判断，<strong>必须结合银行流水和个税数据逐项核对</strong>。<br><br>
-      杰西将在<strong>24小时内</strong>联系您，为您进行专业梳理。
+      返回微信联系杰西，获取针对性收入梳理。
     </div>`;
   }
   document.getElementById("result-content").innerHTML = `
@@ -458,9 +488,9 @@ function showResult(){
     <div class="result-desc">${type.desc}</div>
     ${extraNote}
     <div class="result-cta">
-      <h4>📱 关于我们的服务</h4>
+      <h4>📱 下一步</h4>
       <p>${type.cta}</p>
-      <p style="margin-top:8px">杰西提供<strong>收入财产梳理 + 审核风险诊断 + 最优路径规划</strong>等专业策略服务，欢迎联系了解。</p>
+      <p style="margin-top:8px;color:#1a3a6b">杰西提供<strong>收入财产梳理 + 审核风险诊断 + 最优路径规划</strong>等专业策略服务。</p>
     </div>
   `;
   window.scrollTo(0,0);
