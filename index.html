@@ -81,17 +81,6 @@ body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;backgr
 .result-cta p{font-size:13px;color:#6b7280;line-height:1.8}
 
 /* Auth (password gate) */
-.auth-wrap{padding:60px 24px 32px;text-align:center}
-.auth-wrap .lock-icon{width:72px;height:72px;background:linear-gradient(135deg,#1a3a6b,#2563eb);border-radius:50%;margin:0 auto 24px;display:flex;align-items:center;justify-content:center;font-size:36px;color:#fff}
-.auth-wrap h2{font-size:20px;font-weight:700;color:#1a3a6b;margin-bottom:8px}
-.auth-wrap .auth-sub{font-size:14px;color:#6b7280;margin-bottom:28px}
-.auth-input-wrap{max-width:280px;margin:0 auto 20px}
-.auth-input{width:100%;padding:14px 16px;border:2px solid #d1d5db;border-radius:10px;font-size:18px;text-align:center;letter-spacing:4px;outline:none;font-family:inherit;transition:border-color .2s}
-.auth-input:focus{border-color:#2563eb}
-.auth-input.error{border-color:#dc2626;background:#fef2f2}
-.auth-error{font-size:13px;color:#dc2626;margin-top:8px;display:none}
-.auth-hint{font-size:12px;color:#9ca3af;margin-top:24px;line-height:1.6}
-
 /* Footer */
 .footer{text-align:center;padding:24px;color:#9ca3af;font-size:11px}
 .about{text-align:center;padding:0 24px 60px;font-size:12px;color:#9ca3af;line-height:1.7}
@@ -100,19 +89,6 @@ body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;backgr
 </head>
 <body>
 <div class="container" id="app">
-
-<!-- AUTH (password gate) -->
-<div id="page-auth" class="auth-wrap hidden">
-  <div class="lock-icon">🔐</div>
-  <h2>专属测评入口</h2>
-  <p class="auth-sub">请输入杰西发给您的测评口令</p>
-  <div class="auth-input-wrap">
-    <input type="text" class="auth-input" id="auth-code" placeholder="输入口令" maxlength="20" autocomplete="off">
-    <p class="auth-error" id="auth-error">口令不正确，请检查后重试</p>
-  </div>
-  <button class="btn btn-primary" style="max-width:280px;margin:0 auto" onclick="checkAuth()">验证进入 →</button>
-  <p class="auth-hint">对口令有疑问？<br>返回微信联系杰西获取</p>
-</div>
 
 <!-- ALREADY DONE -->
 <div id="page-done" class="welcome hidden">
@@ -278,8 +254,6 @@ let answers = {};
 let totalScore = 0;
 
 // Valid access codes - add/remove as needed
-const VALID_CODES = ["杰西001"];
-
 // ==================== INIT ====================
 function getCookie(n){const m=document.cookie.match("(^|;)\\s*"+n+"\\s*=\\s*([^;]+)");return m?m.pop():null;}
 function init(){
@@ -288,39 +262,14 @@ function init(){
     showPage("done");
     return;
   }
-  showPage("auth");
-}
-
-function checkAuth(){
-  const input = document.getElementById("auth-code");
-  const errEl = document.getElementById("auth-error");
-  const code = input.value.trim();
-  if(VALID_CODES.includes(code)){
-    input.classList.remove("error");
-    errEl.style.display = "none";
-    sessionStorage.setItem("jessie_auth","1");
-    buildQuiz();
-    showPage("quiz");
-  } else {
-    input.classList.add("error");
-    errEl.style.display = "block";
-    input.value = "";
-    input.focus();
-  }
+  showPage("welcome");
+  buildQuiz();
 }
 
 // Enter key on auth input
-document.addEventListener("DOMContentLoaded",function(){
-  const authInput = document.getElementById("auth-code");
-  if(authInput){
-    authInput.addEventListener("keydown",function(e){
-      if(e.key==="Enter") checkAuth();
-    });
-  }
-});
 
 function showPage(id){
-  document.querySelectorAll("#page-done,#page-auth,#page-welcome,#page-quiz,#page-result,#page-admin").forEach(e=>e.classList.add("hidden"));
+  document.querySelectorAll("#page-done,#page-welcome,#page-quiz,#page-result,#page-admin").forEach(e=>e.classList.add("hidden"));
   document.getElementById("page-"+id).classList.remove("hidden");
   window.scrollTo(0,0);
 }
