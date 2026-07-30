@@ -117,7 +117,7 @@ body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;backgr
   <h1>深圳公租房资格测评</h1>
   <p class="subtitle">3分钟完成 · 基于352号令专业设计</p>
   <div class="features">
-    <div class="feature"><div class="icon">📋</div><div class="label">15道核心问题</div></div>
+    <div class="feature"><div class="icon">📋</div><div class="label">16道核心问题</div></div>
     <div class="feature"><div class="icon">🎯</div><div class="label">智能类型分析</div></div>
     <div class="feature"><div class="icon">📊</div><div class="label">专业策略建议</div></div>
   </div>
@@ -137,7 +137,7 @@ body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;backgr
 <div id="page-quiz" class="hidden">
   <div class="quiz-header">
     <h3>深圳公租房资格测评</h3>
-    <span class="sub">15题 · 约3分钟</span>
+    <span class="sub">16题 · 约3分钟</span>
   </div>
   <div id="quiz-questions"></div>
   <div class="submit-bar">
@@ -185,6 +185,8 @@ const questions = [
   { id:"q2",type:"text",label:"您的微信号/手机号",hint:"用于测评通知（严格保密）",required:true,score:0 },
   { id:"q3",type:"radio",label:"您的深圳户籍所在区",hint:"",required:true,score:0,options:["福田区","罗湖区","南山区","盐田区","宝安区","龙岗区","龙华区","坪山区","光明区","大鹏新区","深汕特别合作区"]},
   { id:"q4",type:"radio",label:"从哪里了解到这个测评？",hint:"",required:false,score:0,options:["小红书","抖音","视频号","朋友圈","公众号","朋友推荐","其他"]},
+  // 测评目的
+  { id:"q_purpose",type:"radio",label:"您做本次测评的主要目的是什么？",hint:"不同目的，审核风险等级不同",required:true,score:0,options:[{text:"准备申请公租房（首次申请）",score:0},{text:"已是老轮候人，考虑老政策转新政策",score:0},{text:"已入住公租房，准备续租审核",score:0},{text:"核对报告已过期，需重新发起核对",score:0},{text:"想先了解一下，还没决定",score:0}]},
   // 家庭结构
   { id:"q5",type:"radio",label:"您的婚姻状况",hint:"影响共同申请人资格",required:true,score:5,options:[{text:"未婚",score:5},{text:"已婚",score:5},{text:"丧偶",score:4},{text:"离异",score:3}]},
   { id:"q6",type:"radio",label:"申请家庭人数（含共同申请人）",hint:"人数不同，限额标准不同",required:true,score:10,options:[{text:"2人",score:10},{text:"3人",score:10},{text:"4人及以上",score:8},{text:"1人（本人单独申请）",score:6}]},
@@ -196,13 +198,13 @@ const questions = [
   // 特殊情形
   { id:"q10",type:"radio",label:"家庭是否有以下特殊情形？",hint:"特殊家庭可享受政策优待",required:false,score:5,options:[{text:"无任何特殊情形",score:0},{text:"持有残疾人证",score:5},{text:"低保/特困/低保边缘家庭",score:5},{text:"失独家庭",score:5},{text:"现役军人",score:5}]},
   // 收入
-  { id:"q11",type:"radio",label:"个税APP上年度年收入大概多少？",hint:"深圳人均限额约5.4万/年",required:true,score:10,options:[{text:"3万元以下",score:10},{text:"3-5万元",score:8},{text:"5-8万元",score:5},{text:"没有个税申报记录",score:3},{text:"不清楚/没查过",score:3},{text:"8-12万元",score:2},{text:"12万元以上",score:0}]},
+  { id:"q11",type:"radio",label:"个税APP上年度家庭年收入合计大概是多少？",hint:"家庭所有成员收入合计。限额：1人≤5.4万，2人≤10.8万，3人≤16.2万，4人≤21.6万，5人及以上≤27万",required:true,score:10,options:[{text:"6万元以下",score:10},{text:"6万-11万元",score:8},{text:"11万-17万元",score:6},{text:"17万-22万元",score:4},{text:"22万-27万元",score:2},{text:"27万元以上",score:0},{text:"不清楚/没查过",score:3},{text:"没有个税申报记录",score:5}]},
   { id:"q12",type:"checkbox",label:"您的收入来源包括以下哪些？（可多选）",hint:"可多选，收入来源越多越复杂，审核风险越高",required:true,score:10,options:[{text:"工资薪金",score:10},{text:"公积金提取",score:6},{text:"抚养费收入",score:6},{text:"投资理财收益",score:5},{text:"劳务报酬/稿费/版权费",score:5},{text:"个体户/网店经营收入",score:3},{text:"公司分红/经营所得",score:2},{text:"房租收入",score:2},{text:"灵活就业人员",score:4},{text:"公私户混用（公司经营走个人账户）",score:1},{text:"有其他未申报收入",score:1}]},
   // 资金往来
   { id:"q13",type:"radio",label:"是否有大额资金往来？",hint:"大额不明资金是审核重点",required:true,score:5,options:[{text:"没有",score:5},{text:"有借款/还款往来",score:3},{text:"有亲戚朋友转账",score:3},{text:"公司经营资金走个人账户",score:1},{text:"有不明来源大额转入",score:0}]},
   // 财产
   { id:"q14",type:"radio",label:"名下车辆情况？",hint:"车辆是财产审核重点，豪车/多车容易超标",required:true,score:10,options:[{text:"没有任何车辆",score:10},{text:"有摩托车",score:7},{text:"有1辆普通家用车",score:5},{text:"有1辆豪华车（BBA及以上）",score:2},{text:"有2辆及以上",score:0}]},
-  { id:"q15",type:"radio",label:"银行存款+理财+公积金余额约多少？",hint:"3人以下限额66万，4人以上限额87万",required:true,score:5,options:[{text:"10万元以下",score:5},{text:"10-30万元",score:4},{text:"30-50万元",score:3},{text:"不清楚",score:2},{text:"50-66万元",score:1},{text:"66万元以上",score:0}]},
+  { id:"q15",type:"radio",label:"银行存款+理财+公积金余额约多少？（家庭合计）",hint:"3人以下限额66万，4人以上限额87万",required:true,score:5,options:[{text:"10万元以下",score:5},{text:"10-30万元",score:4},{text:"30-50万元",score:3},{text:"不清楚",score:2},{text:"50-66万元",score:1},{text:"66万元以上",score:0}]},
 ];
 
 // ==================== TYPES ====================
@@ -293,11 +295,12 @@ function buildQuiz(){
   const c = document.getElementById("quiz-questions");
   let h = '<div class="sec-title">📋 基本信息</div>';
   questions.forEach((q,i)=>{
-    if(i===5) h += '<div class="sec-title">👨‍👩‍👧 家庭结构</div>';
-    if(i===7) h += '<div class="sec-title">🏠 住房情况</div>';
-    if(i===9) h += '<div class="sec-title">💼 社保 & 特殊情形</div>';
-    if(i===11) h += '<div class="sec-title">💰 收入情况</div>';
-    if(i===13) h += '<div class="sec-title">🚗 财产情况</div>';
+    if(i===5) h += '<div class="sec-title">🎯 测评目的</div>';
+    if(i===6) h += '<div class="sec-title">👨‍👩‍👧 家庭结构</div>';
+    if(i===8) h += '<div class="sec-title">🏠 住房情况</div>';
+    if(i===10) h += '<div class="sec-title">💼 社保 & 特殊情形</div>';
+    if(i===12) h += '<div class="sec-title">💰 收入情况</div>';
+    if(i===14) h += '<div class="sec-title">🚗 财产情况</div>';
 
     h += `<div class="q-block" id="q-block-${i}" data-q="${i}">
       <span class="q-num">第${i+1}题</span>
@@ -534,6 +537,7 @@ async function sendToFormSubmit(sub){
   body.append("联系方式",sub.answers.q2||"未填写");
   body.append("所在区",sub.answers.q3!==undefined?questions[2].options[sub.answers.q3]:"未填写");
   body.append("了解渠道",sub.answers.q4!==undefined?questions[3].options[sub.answers.q4]:"未填写");
+  body.append("测评目的",sub.answers.q_purpose!==undefined?questions[5].options[sub.answers.q_purpose].text:"未填写");
   body.append("完整答题详情",answerText);
 
   try {
