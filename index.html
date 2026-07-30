@@ -186,7 +186,7 @@ const questions = [
   { id:"q3",type:"radio",label:"您的深圳户籍所在区",hint:"",required:true,score:0,options:["福田区","罗湖区","南山区","盐田区","宝安区","龙岗区","龙华区","坪山区","光明区","大鹏新区","深汕特别合作区"]},
   { id:"q4",type:"radio",label:"从哪里了解到这个测评？",hint:"",required:false,score:0,options:["小红书","抖音","视频号","朋友圈","公众号","朋友推荐","其他"]},
   // 测评目的
-  { id:"q_purpose",type:"radio",label:"您做本次测评的主要目的是什么？",hint:"不同目的，审核风险等级不同",required:true,score:0,options:[{text:"准备申请公租房（首次申请）",score:0},{text:"已是老轮候人，考虑老政策转新政策",score:0},{text:"已入住公租房，准备续租审核",score:0},{text:"核对报告已过期，需重新发起核对",score:0},{text:"想先了解一下，还没决定",score:0}]},
+  { id:"q_purpose",type:"radio",label:"您做本次测评的主要目的是什么？",hint:"不同目的，审核风险等级不同",required:true,score:0,options:[{text:"准备申请公租房（首次申请）",score:0},{text:"已是老轮候人，考虑老政策转新政策",score:0},{text:"已入住公租房，准备续租（续租时需审核收入财产，若超标租金从30%调至60%或市场价）",score:0},{text:"核对报告已过期，需重新发起核对",score:0},{text:"其他",score:0}]},
   // 家庭结构
   { id:"q5",type:"radio",label:"您的婚姻状况",hint:"影响共同申请人资格",required:true,score:5,options:[{text:"未婚",score:5},{text:"已婚",score:5},{text:"丧偶",score:4},{text:"离异",score:3}]},
   { id:"q6",type:"radio",label:"申请家庭人数（含共同申请人）",hint:"人数不同，限额标准不同",required:true,score:10,options:[{text:"2人",score:10},{text:"3人",score:10},{text:"4人及以上",score:8},{text:"1人（本人单独申请）",score:6}]},
